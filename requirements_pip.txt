@@ -1,0 +1,6 @@
+pympler==0.6
+theano==1.0.3
+tensorflow-tensorboard==0.1.8
+pyyaml==3.13
+python-telegram-bot==11.1.0
+psutil==5.6.1

@@ -1,0 +1,42 @@
+---
+type: single # single|window, maybe add opt
+key: baselines #added to the csv names
+evaluation: eval_simulation #evaluation|evaluation_last|evaluation_multiple
+simulation: 
+  opts: {iter_days: 7, n_recs: 30, alpha: 0, choose_seed: 'rnd', use_cagh: 'False', rerank: 'False', rerank_type: 'user'}
+
+data:
+  name: 30music #added in the end of the csv names
+  folder: data/30music/prepared/
+  prefix: 30music-200ks
+  model: results/models/30music
+  opts: {sessions_test: 100}
+
+results:
+  folder: results/multiple/nowplaying/
+  pickle_models: results/models/nowplaying/
+  
+metrics:
+- class: coverage.Coverage
+  length: [30]
+- class: popularity.Popularity
+  length: [30]
+- class: accuracy_multiple.Precision
+  length: [3,5,10,15,20,30]
+- class: accuracy_multiple.Recall
+  length: [3,5,10,15,20,30]
+
+algorithms:
+#
+#- class: narm.narm.NARM
+#  params: {epochs: 20, lr: 0.007}
+#  key: narm
+#- class: knn.sknn.ContextKNN
+#  params: {'similarity': 'cosine', 'sample_size': 500, 'k': 100}
+#  key: sknn
+- class: gru4rec.gru4rec.GRU4Rec
+  params: {'loss': 'bpr-max', 'final_act': 'linear', 'dropout_p_hidden':0.6, 'learning_rate': 0.08, momentum: 0.1}
+  key: gru4rec
+#- class: baselines.random.RandomPred
+#  params: {}
+#  key: rnd

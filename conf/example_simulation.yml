@@ -1,0 +1,42 @@
+---
+type: single # single|window, maybe add opt
+key: baselines #added to the csv names
+evaluation: eval_simulation #evaluation|evaluation_last|evaluation_multiple
+simulation: 
+  opts: {iter_days: 7, n_recs: 30, alpha: 0, choose_seed: 'rnd', use_cagh: 'False', rerank: 'False', rerank_type: 'user'}
+
+data:
+  name: nowplaying #added in the end of the csv names
+  prefix: nowplaying
+  model: results/models/nowplaying
+  folder: data/nowplaying/prepared/
+  opts: {sessions_test: 100}
+
+results:
+  folder: results/multiple/nowplaying/
+  pickle_models: results/models/nowplaying/
+  
+metrics:
+- class: coverage.Coverage
+  length: [30]
+- class: popularity.Popularity
+  length: [30]
+- class: accuracy_multiple.Precision
+  length: [3,5,10,15,20,30]
+- class: accuracy_multiple.Recall
+  length: [3,5,10,15,20,30]
+
+algorithms:
+#- class: narm.narm.NARM
+#  params: {epochs: 20, lr: 0.004}
+#  key: narm
+- class: knn.sknn.ContextKNN
+  params: {'similarity': 'jaccard', 'sample_size': 2500, 'k': 50}
+  key: knn
+#- class: gru4rec.gru4rec.GRU4Rec
+#  params: {'loss': 'bpr-max', 'final_act': 'elu-0.5', 'dropout_p_hidden':0.0, 'learning_rate': 0.04, momentum: 0.0, constrained_embedding: True}
+#  key: gru4rec
+#  params: { loss: 'top1-max', final_act: 'elu-0.5', dropout_p_hidden: 0.6, learning_rate: 0.05, momentum: 0.1, constrained_embedding: True }
+#- class: baselines.random.RandomPred
+#  params: {}
+#  key: rnd

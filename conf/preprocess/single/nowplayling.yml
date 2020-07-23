@@ -1,0 +1,16 @@
+---
+type: single # single|window
+preprocessor: music # 
+data:
+  folder: data/nowplaying/raw/
+  prefix: nowplaying
+
+filter:
+  min_item_support: 5
+  min_session_length: 2
+
+params:
+  days_test: 1
+
+output:
+  folder: data/nowplaying/prepared/
